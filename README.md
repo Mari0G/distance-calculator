@@ -2,6 +2,8 @@
 
 This is a small *React Native* App that lets the user enter up to four addresses to find the closest of those addresses. It was coded for demonstrational purposes.
 
+![image](/assets/example.png)
+
 The App supports both Android & iOS and was developed using **Expo managed workflow**.
 
 Features:
