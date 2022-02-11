@@ -1,13 +1,13 @@
-interface geoLocation{
+interface geoLocation {
     latitude: number,
     longitude: number,
 }
 
 interface address {
-    value: string,
+    value: string | undefined,
 
     distance: number | undefined,
-    geoLocation: geoLocation,
+    geoLocation: geoLocation | undefined,
 }
 
 

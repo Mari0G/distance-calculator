@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
-import { View ,StyleSheet, TextInput} from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons'; 
+import { Entypo } from '@expo/vector-icons';
 
-import {LocationHandler} from '../handlers/LocationHandler';
-import defaultStyles from "../defaultStyles";
+import { LocationHandler } from '../handlers/LocationHandler';
+import defaultStyles, { GetDisplayWidthPercentage } from "../defaultStyles";
 
 interface AddressFieldProps {
     index: number,
@@ -20,9 +20,11 @@ export default class AddressField extends Component<AddressFieldProps> {
     }
 
     _validateAddress = async () => {
-        let {saveAddress, index} = this.props;
-        let {addressValue} = this.state; 
+        let { saveAddress, index } = this.props;
+        let { addressValue } = this.state;
         var isValid = false;
+
+        await LocationHandler.RequestLocationPermission();
 
         const result = await LocationHandler.FindAddress(addressValue as string);
 
@@ -31,9 +33,12 @@ export default class AddressField extends Component<AddressFieldProps> {
 
             let address: address = { value: addressValue as string, geoLocation: result, distance: undefined };
             saveAddress(address, index);
+        } else {
+            let address: address = { value: undefined, geoLocation: undefined, distance: undefined };
+            saveAddress(address, index);
         }
-        
-        this.setState({isValid});
+
+        this.setState({ isValid });
     }
 
     _renderIcon() {
@@ -41,21 +46,23 @@ export default class AddressField extends Component<AddressFieldProps> {
             return null;
 
         if (this.state.isValid)
-            return <MaterialCommunityIcons name="check-bold" size={32} color="green" />
+            return <MaterialCommunityIcons name="check-bold" size={GetDisplayWidthPercentage(8)} color="green" />
         else
-            return <Entypo name="squared-cross" size={32} color="red" />
+            return <Entypo name="squared-cross" size={GetDisplayWidthPercentage(8)} color="red" />
     }
 
     render() {
-        const {addressValue} = this.state;
+        const { addressValue } = this.state;
 
         return (
             <View style={styles.container}>
                 <TextInput style={styles.input}
                     value={addressValue}
-                    onChangeText={(text) => this.setState({addressValue: text})}
+                    onChangeText={(text) => this.setState({ addressValue: text })}
                     onEndEditing={this._validateAddress}
-                    placeholder='Street A, 00000, City, Country'/>
+                    placeholder='Street, 12345, City, Country'
+                    placeholderTextColor={defaultStyles.colors.placerHolderText} />
+
 
                 <View style={styles.iconContainer}>
                     {this._renderIcon()}
@@ -68,23 +75,26 @@ export default class AddressField extends Component<AddressFieldProps> {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        //justifyContent: 'center',
+        alignContent: 'center',
+        justifyContent: 'space-between',
         flexDirection: 'row',
-        width: '100%',
+        width: GetDisplayWidthPercentage(80),
         marginBottom: '5%',
-        marginLeft: '15%',
-    },
-    iconContainer: {
-        marginLeft: '2.5%',
-        width: 36,
-        height: 36,
-    },
-    input: {
         borderWidth: 1,
         borderColor: defaultStyles.colors.border,
+    },
+    iconContainer: {
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: GetDisplayWidthPercentage(10),
+        aspectRatio: 1,
+    },
+    input: {
         color: defaultStyles.colors.text,
-        width: '75%',
-        padding: '2.%',
-        //flexShrink: 1,
+        height: '100%',
+        width: '100%',
+        flexShrink: 1,
+        paddingHorizontal: '2.5%',
     }
 });

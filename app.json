@@ -28,6 +28,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Small App that finds the closest location of up to 4 addresses."
   }
 }
