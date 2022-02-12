@@ -12,6 +12,13 @@ Features:
 - Calculating the closest address and displaying the calculated distance
 - Saving addresses locally
 
+# how it works
+
+1. Addresses are geocoded to GPS coordinates via expo-location SDK
+2. Distances are then calculated via *Haversine´s formula*
+
+This means that all distances are "air" distances.
+
 You can preview the App on your own *Android* device using *expo go*
 by installing it from [*Google Playstore*](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=de&gl=US)
 and following the [instructions here](https://expo.dev/%40mari0g/distance-calculator?serviceType=classic&distribution=expo-go&releaseChannel=default).
